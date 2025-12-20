@@ -11,11 +11,14 @@ const VeriMedia = () => {
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setUploadedFile(url);
-      setVerificationResult(null);
-    }
+     if (!file) return;
+
+  setUploadedFile({
+    file,
+    preview: URL.createObjectURL(file)
+  });
+
+  setVerificationResult(null);
   };
 
   const handleRemoveFile = () => {
@@ -26,32 +29,34 @@ const VeriMedia = () => {
     setVerificationResult(null);
   };
 
-  const analyzeMedia = async () => {
+const analyzeMedia = async () => {
+  if (!uploadedFile?.file) return;
+
+  try {
     setIsAnalyzing(true);
 
-    setTimeout(() => {
-      const trustScore = Math.floor(Math.random() * 40) + 60;
-      const hasWatermark = Math.random() > 0.3;
-      const layers = [
-        { name: 'C2PA Watermark', status: hasWatermark ? 'pass' : 'fail', confidence: hasWatermark ? 98 : 0 },
-        { name: 'Metadata Analysis', status: 'pass', confidence: 92 },
-        { name: 'AI Detection', status: trustScore > 70 ? 'pass' : 'warning', confidence: trustScore },
-        { name: 'Blockchain Verification', status: hasWatermark ? 'pass' : 'unknown', confidence: hasWatermark ? 95 : 0 },
-        { name: 'Source Attribution', status: 'pass', confidence: 88 }
-      ];
+    const formData = new FormData();
+    formData.append("file", uploadedFile.file);
 
-      setVerificationResult({
-        trustScore,
-        hasWatermark,
-        layers,
-        timestamp: new Date().toISOString(),
-        source: hasWatermark ? 'Canon EOS R5' : 'Unknown',
-        creator: hasWatermark ? 'John Photographer' : 'Unknown',
-        modifications: Math.floor(Math.random() * 3)
-      });
-      setIsAnalyzing(false);
-    }, 2500);
-  };
+    const res = await fetch("http://localhost:5000/api/verify", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) {
+      throw new Error("Verification failed");
+    }
+
+    const data = await res.json();
+    setVerificationResult(data);
+  } catch (error) {
+    console.error(error);
+    alert("Error verifying media");
+  } finally {
+    setIsAnalyzing(false);
+  }
+};
+
 
   const TrustScoreMeter = ({ score }) => {
     const getColor = (s) => {
@@ -210,7 +215,7 @@ const VeriMedia = () => {
                 ) : (
                   <div className="space-y-4 relative">
                     <div className="relative rounded-xl overflow-hidden shadow-2xl">
-                      <img src={uploadedFile} alt="Uploaded" className="w-full h-64 object-cover" />
+                      <img src={uploadedFile.preview} alt="Uploaded" className="w-full h-64 object-cover" />
                       <button
                         onClick={handleRemoveFile}
                         className="absolute top-3 right-3 bg-red-500/90 backdrop-blur-sm text-white p-2 rounded-full hover:bg-red-600 transition-all duration-300 hover:scale-110 shadow-lg"

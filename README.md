@@ -1,3 +1,4 @@
+
 ---
 ``` text
 
@@ -39,4 +40,24 @@ frontend/
 
 
 ---
+``` text
 backend/
+├── server.js
+├── app.js
+├── config/
+│   ├── db.js
+│   └── ai.config.js
+├── models/
+│   ├── User.js
+│   └── Verification.js
+├── routes/
+│   ├── auth.routes.js
+│   └── verify.routes.js
+├── controllers/
+│   ├── auth.controller.js
+│   └── verify.controller.js
+├── middleware/
+│   └── auth.middleware.js
+├── uploads/
+├── .env
+└── package.json
