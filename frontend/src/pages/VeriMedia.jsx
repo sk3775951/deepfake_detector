@@ -47,8 +47,34 @@ const analyzeMedia = async () => {
       throw new Error("Verification failed");
     }
 
-    const data = await res.json();
-    setVerificationResult(data);
+    const raw = await res.json();
+
+    const formattedResult = {
+      trustScore: raw.trustScore ?? Math.floor((raw.confidence ?? 0.7) * 100),
+      source: raw.source ?? "Unknown Device",
+      creator: raw.creator ?? "Unknown",
+      timestamp: raw.timestamp ?? new Date().toISOString(),
+      modifications: raw.modifications ?? 0,
+      layers: raw.layers ?? [
+        {
+          name: "AI Deepfake Detection",
+          status: raw.prediction === "FAKE" ? "fail" : "pass",
+          confidence: Math.round(raw.confidence * 100)
+        },
+        {
+          name: "Metadata Analysis",
+          status: "unknown",
+          confidence: 0
+        },
+        {
+          name: "Behavioral Signals",
+          status: "unknown",
+          confidence: 0
+        }
+      ]
+    };
+
+    setVerificationResult(formattedResult);
   } catch (error) {
     console.error(error);
     alert("Error verifying media");
@@ -56,6 +82,7 @@ const analyzeMedia = async () => {
     setIsAnalyzing(false);
   }
 };
+
 
 
   const TrustScoreMeter = ({ score }) => {

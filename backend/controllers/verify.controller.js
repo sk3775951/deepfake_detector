@@ -1,7 +1,4 @@
-import fs from "fs";
-import FormData from "form-data";
-import axios from "axios";
-import { AI_SERVICE_URL } from "../config/ai.config.js";
+import { analyzeWithAI } from "../services/ai.services.js";
 import Verification from "../models/Verification.js";
 
 export const verifyMedia = async (req, res) => {
@@ -10,25 +7,13 @@ export const verifyMedia = async (req, res) => {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    const formData = new FormData();
-    formData.append("file", fs.createReadStream(req.file.path));
+    // 🔥 AI prediction
+    const aiResult = await analyzeWithAI(req.file.path);
 
-const aiRes = await axios.post(
-  AI_SERVICE_URL,
-  formData,
-  {
-    headers: {
-      ...formData.getHeaders()
-    }
-  }
-);
+    // Optional: save to DB
+    const saved = await Verification.create(aiResult);
 
-const result = aiRes.data;
-
-
-    await Verification.create(result);
-
-    res.json(result);
+    res.json(saved);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Verification failed" });
