@@ -1,6 +1,6 @@
 # VeriMedia: AI-Powered Deepfake Detection Platform
 
-A comprehensive web application that combines advanced AI deepfake detection with cryptographic watermarking to establish media authenticity and provenance. Built with a multi-layered "Swiss Cheese Model" approach for robust content verification.
+A comprehensive web application that combines advanced AI deepfake detection to establish media authenticity and provenance.
 
 ##  Features
 
