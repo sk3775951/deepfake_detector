@@ -9,16 +9,6 @@ A comprehensive web application that combines advanced AI deepfake detection wit
 - **Real-time Processing**: Fast inference on uploaded images and videos
 - **Confidence Scoring**: Detailed probability assessments for real vs. fake content
 
-### Cryptographic Watermarking
-- **C2PA Standard**: Content Provenance and Authenticity compliant watermarks
-- **Immutable Metadata**: Tamper-proof digital signatures embedded in media
-- **Chain of Custody**: Track every modification and edit history
-
-### Multi-Layer Verification
-- **Swiss Cheese Model**: Overlapping detection methods prevent single-point failures
-- **Metadata Analysis**: EXIF, IPTC, and XMP data inspection
-- **Behavioral Signals**: Advanced pattern recognition for AI-generated artifacts
-
 ### Modern Web Interface
 - **Responsive Design**: Works seamlessly on desktop and mobile
 - **Real-time Feedback**: Instant analysis results with visual indicators
@@ -128,9 +118,6 @@ VITE_API_URL=http://localhost:5000/api
 - `POST /api/verify` - Analyze media for deepfakes
 - `GET /api/verifications` - Get verification history
 
-### Watermarking
-- `POST /api/watermark` - Embed C2PA watermark
-
 ### Authentication
 - `POST /api/auth/login` - User login
 - `POST /api/auth/register` - User registration
@@ -142,23 +129,6 @@ The deepfake detection model is based on MobileNetV2 architecture:
 - **Architecture**: MobileNetV2 → Custom classifier (128 → 2)
 - **Training**: Binary classification (Real/Fake)
 - **Accuracy**: ~95% on test dataset
-
-## 📊 Swiss Cheese Model
-
-Our verification approach uses multiple overlapping layers:
-
-1. **AI Detection Layer** - Neural network analysis
-2. **Metadata Layer** - File metadata inspection
-3. **Watermark Layer** - Cryptographic provenance
-4. **Behavioral Layer** - Pattern recognition
-5. **Source Attribution** - Origin verification
-
-## 🔒 Security Features
-
-- **Cryptographic Watermarks** - Tamper-proof content signing
-- **File Integrity** - SHA-256 hashing for verification
-- **Secure Uploads** - Temporary file handling with cleanup
-- **CORS Protection** - Configured cross-origin policies
 
 ## 📈 Performance
 
@@ -182,7 +152,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - MobileNetV2 paper and PyTorch team
-- C2PA specification and Content Authenticity Initiative
+- Content Authenticity Initiative
 - Open source community for amazing tools
 
 ## 📞 Contact
